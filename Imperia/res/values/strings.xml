@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Imperia</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+    <string name="title_activity_realm">RealmActivity</string>
+    <string name="title_activity_village">VillageActivity</string>
+    <string name="wood_">Wood:</string>
+    <string name="iron_">Iron:</string>
+    <string name="stone_">Stone:</string>
+    <string name="gold_">Gold:</string>
+
+</resources>

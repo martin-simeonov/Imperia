@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".VillageActivity" >
+
+    <TextView
+        android:id="@+id/wood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/wood_"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/gold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/stone"
+        android:layout_alignBottom="@+id/stone"
+        android:layout_marginLeft="42dp"
+        android:layout_toRightOf="@+id/stone"
+        android:text="@string/gold_"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/stone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/iron"
+        android:layout_alignBottom="@+id/iron"
+        android:layout_marginLeft="42dp"
+        android:layout_toRightOf="@+id/iron"
+        android:text="@string/stone_"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/iron"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/wood"
+        android:layout_alignBottom="@+id/wood"
+        android:layout_marginLeft="42dp"
+        android:layout_toRightOf="@+id/wood"
+        android:text="@string/iron_"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout>
