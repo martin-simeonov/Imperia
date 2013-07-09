@@ -19,14 +19,14 @@
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/gold"
+        android:id="@+id/iron"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/stone"
-        android:layout_alignBottom="@+id/stone"
-        android:layout_marginLeft="42dp"
-        android:layout_toRightOf="@+id/stone"
-        android:text="@string/gold_"
+        android:layout_alignBaseline="@+id/wood"
+        android:layout_alignBottom="@+id/wood"
+        android:layout_marginLeft="7dp"
+        android:layout_toRightOf="@+id/wood"
+        android:text="@string/iron_"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -35,20 +35,41 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/iron"
         android:layout_alignBottom="@+id/iron"
-        android:layout_marginLeft="42dp"
+        android:layout_marginLeft="7dp"
         android:layout_toRightOf="@+id/iron"
         android:text="@string/stone_"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/iron"
+        android:id="@+id/gold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/wood"
-        android:layout_alignBottom="@+id/wood"
-        android:layout_marginLeft="42dp"
-        android:layout_toRightOf="@+id/wood"
-        android:text="@string/iron_"
+        android:layout_alignBaseline="@+id/stone"
+        android:layout_alignBottom="@+id/stone"
+        android:layout_marginLeft="7dp"
+        android:layout_toRightOf="@+id/stone"
+        android:text="@string/gold_"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/logout"
+        android:layout_alignLeft="@+id/wood"
+        android:layout_below="@+id/wood"
+        android:layout_marginTop="10dp" >
+
+    </ListView>
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:minHeight="20dp"
+        android:onClick="logout"
+        android:text="@string/logout" />
 
 </RelativeLayout>

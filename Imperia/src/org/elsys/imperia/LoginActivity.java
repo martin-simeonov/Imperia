@@ -32,26 +32,28 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * Button login onClick
+	 * 
+	 * @param view
+	 */
 	public void login(View view) {
 		EditText username = (EditText) findViewById(R.id.username);
 		EditText password = (EditText) findViewById(R.id.password);
 
+		// Create User object from TextView contents
 		User user = new User(username.getText().toString(), password.getText()
 				.toString());
 
 		logService = new LoginService();
 		logService.login(user);
 
-		ArrayList<Realm> result = logService.getResult();
-		ArrayList<String> realms = new ArrayList<String>();
+		ArrayList<Realm> realms = logService.getRealms();
 
-		for (Realm r : result) {
-			realms.add(r.getName());
-		}
-
+		// Send the realm list to new RealmActivity
 		Intent intent = new Intent(this, RealmActivity.class);
-		intent.putStringArrayListExtra(REALMS_MESSAGE, realms);
+		intent.putExtra(REALMS_MESSAGE, realms);
 		startActivity(intent);
 	}
-	
+
 }

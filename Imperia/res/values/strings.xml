@@ -12,5 +12,10 @@
     <string name="iron_">Iron:</string>
     <string name="stone_">Stone:</string>
     <string name="gold_">Gold:</string>
+    <string name="level_">Level:</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="buildings">Buildings</string>
+    <string name="logout">Logout</string>
+    <string name="password">Password</string>
 
 </resources>

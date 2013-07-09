@@ -1,21 +1,42 @@
 package org.elsys.imperia;
 
+import java.util.ArrayList;
+
+import org.elsys.models.Building;
 import org.elsys.models.Resource;
+import org.elsys.services.LogoutService;
+import org.elsys.services.UpgradeService;
 import org.elsys.services.VillageService;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class VillageActivity extends Activity {
 
 	private VillageService villageService;
+	private UpgradeService upgradeService;
+	private LogoutService logoutService;
+
+	private ArrayList<Building> buildingList;
+
+	private ListView listView1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_village);
+
+		// Add the ListView header
+		listView1 = (ListView) findViewById(R.id.listView1);
+		View header = (View) getLayoutInflater().inflate(
+				R.layout.listview_buildingheader_row, null);
+		listView1.addHeaderView(header);
+
 		createVillage();
 	}
 
@@ -26,23 +47,71 @@ public class VillageActivity extends Activity {
 		return true;
 	}
 
-	public void createVillage() {
+	private void createVillage() {
 		villageService = new VillageService();
-		villageService.resources();
-
+		villageService.populate();
+		setResourceBar();
+		setBuildings();
 	}
 
-	public void setResourceBar() {
+	private void setResourceBar() {
+		// Get the resources from villageService
 		Resource resource = villageService.getResources();
 		TextView wood = (TextView) findViewById(R.id.wood);
 		TextView iron = (TextView) findViewById(R.id.iron);
 		TextView stone = (TextView) findViewById(R.id.stone);
 		TextView gold = (TextView) findViewById(R.id.gold);
 
-		wood.setText(wood.getText().toString() + " " + resource.getWood());
-		iron.setText(iron.getText().toString() + " " + resource.getIron());
-		stone.setText(stone.getText().toString() + " " + resource.getStone());
-		gold.setText(gold.getText().toString() + " " + resource.getGold());
+		// Set the values to the TextViews
+		wood.setText("Wood:" + resource.getWood());
+		iron.setText("Iron:" + resource.getIron());
+		stone.setText("Stone:" + resource.getStone());
+		gold.setText("Gold:" + resource.getGold());
 	}
 
+	private void setBuildings() {
+		// Get the building list
+		buildingList = villageService.getBuildings();
+		Building[] buildings = buildingList.toArray(new Building[buildingList
+				.size()]);
+
+		// Create new BuildingAdapter for the ListView
+		BuildingAdapter adapter = new BuildingAdapter(this,
+				R.layout.listview_item_row, buildings);
+
+		listView1.setAdapter(adapter);
+	}
+
+	/**
+	 * ListItem buttonUpgrade onClick method
+	 * 
+	 * @param v
+	 */
+	public void upgrade(View v) {
+		upgradeService = new UpgradeService();
+
+		// Get the name of list item, which called the method
+		RelativeLayout rl = (RelativeLayout) v.getParent();
+		TextView txtView = (TextView) rl.findViewById(R.id.name);
+		String name = txtView.getText().toString();
+
+		// Find the building object with the given name
+		for (Building b : buildingList) {
+			if (b.getName().equals(name)) {
+				// Send request for upgrade to upgradeService
+				upgradeService.upgrade(b);
+			}
+		}
+
+		// Recreate the village to refresh its contents
+		createVillage();
+	}
+
+	public void logout(View v) {
+		logoutService = new LogoutService();
+		logoutService.logout();
+
+		// Kill the application proccess
+		android.os.Process.killProcess(android.os.Process.myPid());
+	}
 }
