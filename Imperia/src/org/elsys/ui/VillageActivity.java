@@ -128,7 +128,7 @@ public class VillageActivity extends Activity {
 			@Override
 			public void onServiceFinish() {
 				upgrade.setClickable(true);
-				upgradeService.getResult();
+				// upgradeService.getResult();
 				if (upgradeService.getError() == null) {
 					// Recreate the village to refresh its contents
 					createVillage();
