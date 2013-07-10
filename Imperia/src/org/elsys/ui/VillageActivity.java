@@ -1,8 +1,12 @@
-package org.elsys.imperia;
+package org.elsys.ui;
 
 import java.util.ArrayList;
 
+import org.elsys.adapters.BuildingAdapter;
+import org.elsys.imperia.R;
+import org.elsys.listeners.OnServiceFinishListener;
 import org.elsys.models.Building;
+import org.elsys.models.CustomError;
 import org.elsys.models.Resource;
 import org.elsys.services.LogoutService;
 import org.elsys.services.UpgradeService;
@@ -12,9 +16,11 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class VillageActivity extends Activity {
 
@@ -49,7 +55,17 @@ public class VillageActivity extends Activity {
 
 	private void createVillage() {
 		villageService = new VillageService();
-		villageService.populate();
+		villageService.populate(new OnServiceFinishListener() {
+
+			@Override
+			public void onServiceFinish() {
+				onVillageServiceFinish();
+			}
+
+		});
+	}
+
+	private void onVillageServiceFinish() {
 		setResourceBar();
 		setBuildings();
 	}
@@ -88,6 +104,9 @@ public class VillageActivity extends Activity {
 	 * @param v
 	 */
 	public void upgrade(View v) {
+		final Button upgrade = (Button) findViewById(R.id.upgrade);
+		upgrade.setClickable(false);
+
 		upgradeService = new UpgradeService();
 
 		// Get the name of list item, which called the method
@@ -95,23 +114,51 @@ public class VillageActivity extends Activity {
 		TextView txtView = (TextView) rl.findViewById(R.id.name);
 		String name = txtView.getText().toString();
 
+		Building searchBuilding = null;
 		// Find the building object with the given name
 		for (Building b : buildingList) {
 			if (b.getName().equals(name)) {
-				// Send request for upgrade to upgradeService
-				upgradeService.upgrade(b);
+				searchBuilding = b;
 			}
 		}
 
-		// Recreate the village to refresh its contents
-		createVillage();
+		// Send request for upgrade to upgradeService
+		upgradeService.upgrade(searchBuilding, new OnServiceFinishListener() {
+
+			@Override
+			public void onServiceFinish() {
+				upgrade.setClickable(true);
+				upgradeService.getResult();
+				if (upgradeService.getError() == null) {
+					// Recreate the village to refresh its contents
+					createVillage();
+				}
+				showError();
+			}
+
+		});
+	}
+
+	private void showError() {
+		// If there is error show it
+		CustomError error = upgradeService.getError();
+		if (error != null) {
+			Toast toast = Toast.makeText(getApplicationContext(),
+					error.getName(), Toast.LENGTH_SHORT);
+			toast.show();
+		}
 	}
 
 	public void logout(View v) {
 		logoutService = new LogoutService();
-		logoutService.logout();
+		logoutService.logout(new OnServiceFinishListener() {
 
-		// Kill the application proccess
-		android.os.Process.killProcess(android.os.Process.myPid());
+			@Override
+			public void onServiceFinish() {
+				// Kill the application proccess
+				android.os.Process.killProcess(android.os.Process.myPid());
+			}
+
+		});
 	}
 }

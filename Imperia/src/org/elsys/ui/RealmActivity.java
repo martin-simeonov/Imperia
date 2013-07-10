@@ -1,7 +1,9 @@
-package org.elsys.imperia;
+package org.elsys.ui;
 
 import java.util.ArrayList;
 
+import org.elsys.imperia.R;
+import org.elsys.listeners.OnServiceFinishListener;
 import org.elsys.models.Realm;
 import org.elsys.services.RealmService;
 
@@ -69,18 +71,32 @@ public class RealmActivity extends ListActivity {
 
 	/**
 	 * Called by ListView onItemClickListener
+	 * 
 	 * @param selectedRealm
 	 */
 	private void selectRealm(String selectedRealm) {
 		realmService = new RealmService();
+		Realm searchRealm = null;
+
 		// Find which realm was selected
 		for (Realm r : realms) {
 			if (r.getName().equals(selectedRealm)) {
-				// Pass the id of the selected realm to realmService
-				realmService.selectRealm(r.getId());
+				searchRealm = r;
 			}
 		}
 
+		// Pass the id of the selected realm to realmService
+		realmService.selectRealm(searchRealm.getId(), new OnServiceFinishListener() {
+
+			@Override
+			public void onServiceFinish() { // Wait for the http client to finish
+				onRealmServiceFinish();
+			}
+
+		});
+	}
+
+	private void onRealmServiceFinish() {
 		// Start new VillageActivity
 		Intent intent = new Intent(this, VillageActivity.class);
 		startActivity(intent);

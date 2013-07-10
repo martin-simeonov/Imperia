@@ -1,5 +1,6 @@
-package org.elsys.imperia;
+package org.elsys.adapters;
 
+import org.elsys.imperia.R;
 import org.elsys.models.Building;
 import org.elsys.models.Resource;
 
