@@ -1,42 +1,43 @@
 package org.elsys.client;
 
-import java.io.UnsupportedEncodingException;
-
-import org.apache.http.entity.StringEntity;
 import org.elsys.listeners.OnServiceFinishListener;
 import org.json.JSONObject;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 public class HttpClient {
 
-	private JSONObject res;
-	public static final String url = "http://imperia123.net23.net/api.php";
+	private static JSONObject res;
+	public static final String url = "http://192.168.0.100/elsysgame/api.php?request";
+	public static String sessionId;
 
-	public JSONObject getResponse() {
+	public static AsyncHttpClient client = new AsyncHttpClient();
+
+	public static JSONObject getResponse() {
 		return res;
 	}
 
-	public void sendRequest(String input, final OnServiceFinishListener finish) {
-		AsyncHttpClient client = new AsyncHttpClient();
+	public static void sendRequest(String json,
+			final OnServiceFinishListener finish) {
 
-		StringEntity entity = null;
-		try {
-			entity = new StringEntity(input);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		RequestParams params = new RequestParams();
+		params.put("request", json);
+		System.out.println(params);
 
-		client.post(null, url, entity, "application/json",
-				new JsonHttpResponseHandler() {
-					@Override
-					public void onSuccess(JSONObject response) {
-						System.out.println(response.toString());
-						res = response;
-						finish.onServiceFinish();
-					}
-				});
+		client.post(url, params, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject response) {
+				System.out.println(response.toString());
+				res = response;
+				finish.onServiceFinish();
+			}
+
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 }

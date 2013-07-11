@@ -14,32 +14,31 @@ import com.google.gson.reflect.TypeToken;
 public class UpgradeService {
 
 	private Gson gson;
-	private HttpClient httpClient;
 	private CustomError error;
 
 	public UpgradeService() {
 		gson = new Gson();
-		httpClient = new HttpClient();
 	}
 
 	public void upgrade(Building building, final OnServiceFinishListener fl) {
 		// Form JSON String for the request
-		Map<String, Integer> request = new LinkedHashMap<String, Integer>();
+		Map<String, Object> request = new LinkedHashMap<String, Object>();
 		request.put("id", 3);
 		request.put("building_id", building.getId());
 		request.put("level", building.getCurrentLevel());
+		request.put("sessionid", HttpClient.sessionId);
 
-		httpClient.sendRequest(gson.toJson(request), fl);
+		HttpClient.sendRequest(gson.toJson(request), fl);
 	}
 
 	public void getResult() {
-		String json = httpClient.getResponse().toString();
+		String json = HttpClient.getResponse().toString();
 
 		Map<String, Object> hm = gson.fromJson(json,
 				new TypeToken<LinkedHashMap<String, Object>>() {
 				}.getType());
 
-		error = gson.fromJson(hm.get("error").toString(),
+		error = gson.fromJson(gson.toJson(hm.get("error")),
 				new TypeToken<CustomError>() {
 				}.getType());
 	}

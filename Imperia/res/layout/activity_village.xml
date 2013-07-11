@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".VillageActivity" >
+    tools:context=".Village" >
 
     <TextView
         android:id="@+id/wood"
@@ -59,7 +59,6 @@
         android:layout_alignLeft="@+id/wood"
         android:layout_below="@+id/wood"
         android:layout_marginTop="10dp" >
-
     </ListView>
 
     <Button

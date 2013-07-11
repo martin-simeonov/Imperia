@@ -11,19 +11,18 @@ import com.google.gson.Gson;
 public class RealmService {
 
 	private Gson gson;
-	private HttpClient httpClient;
 
 	public RealmService() {
 		gson = new Gson();
-		httpClient = new HttpClient();
 	}
 
 	public void selectRealm(int realmId, final OnServiceFinishListener fl) {
 		// Form JSON String for the request
-		Map<String, Integer> request = new LinkedHashMap<String, Integer>();
+		Map<String, Object> request = new LinkedHashMap<String, Object>();
 		request.put("id", 5);
-		request.put("realm_id", realmId);
+		request.put("realmid", realmId);
+		request.put("sessionid", HttpClient.sessionId);
 
-		httpClient.sendRequest(gson.toJson(request), fl);
+		HttpClient.sendRequest(gson.toJson(request), fl);
 	}
 }

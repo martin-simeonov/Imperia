@@ -68,7 +68,7 @@ public class LoginActivity extends Activity {
 
 	private void onLoginServiceFinish() {
 		ArrayList<Realm> realms = loginService.getRealms();
-
+		
 		if (realms != null) {
 			// Send the realm list to new RealmActivity
 			Intent intent = new Intent(this, RealmActivity.class);

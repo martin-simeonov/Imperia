@@ -3,4 +3,7 @@
     <issue id="OldTargetApi">
         <ignore path="AndroidManifest.xml" />
     </issue>
+    <issue id="SimpleDateFormat">
+        <ignore path="src/org/elsys/adapters/BuildingAdapter.java" />
+    </issue>
 </lint>

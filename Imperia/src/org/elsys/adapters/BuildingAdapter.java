@@ -1,11 +1,18 @@
 package org.elsys.adapters;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.elsys.imperia.R;
 import org.elsys.models.Building;
 import org.elsys.models.Resource;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +46,7 @@ public class BuildingAdapter extends ArrayAdapter<Building> {
 		holder = new BuildingHolder();
 		holder.txtName = (TextView) row.findViewById(R.id.name);
 		holder.txtCurrentLevel = (TextView) row.findViewById(R.id.currentLevel);
-		holder.txtEndTime = (TextView) row.findViewById(R.id.endTime);
+		final TextView txtEndTime = (TextView) row.findViewById(R.id.endTime);
 		holder.txtWood = (TextView) row.findViewById(R.id.wood);
 		holder.txtIron = (TextView) row.findViewById(R.id.iron);
 		holder.txtStone = (TextView) row.findViewById(R.id.stone);
@@ -52,10 +59,29 @@ public class BuildingAdapter extends ArrayAdapter<Building> {
 		holder.txtCurrentLevel.append(Integer.toString(building
 				.getCurrentLevel()));
 		if (building.isInProgress()) {
-			holder.txtEndTime.append(building.getEndTime());
-		}
-		if (!building.isCanUpgrade()) {
-			holder.btnUpgrade.setClickable(false);
+			Calendar c = Calendar.getInstance();
+			Date date1 = c.getTime();
+			Date date2 = null;
+
+			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			try {
+				date2 = sdf.parse(building.getEndTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			long diff = date2.getTime() - date1.getTime();
+
+			new CountDownTimer(diff, 1000) {
+
+				public void onTick(long millisUntilFinished) {
+					txtEndTime.setText("seconds remaining: "
+							+ millisUntilFinished / 1000);
+				}
+
+				public void onFinish() {
+					txtEndTime.setText("Done!");
+				}
+			}.start();
 		}
 
 		Resource r = building.getNextLevelResources();
@@ -78,4 +104,5 @@ public class BuildingAdapter extends ArrayAdapter<Building> {
 		TextView txtGold;
 		Button btnUpgrade;
 	}
+
 }

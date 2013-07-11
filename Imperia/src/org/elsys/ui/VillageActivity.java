@@ -3,6 +3,7 @@ package org.elsys.ui;
 import java.util.ArrayList;
 
 import org.elsys.adapters.BuildingAdapter;
+import org.elsys.client.HttpClient;
 import org.elsys.imperia.R;
 import org.elsys.listeners.OnServiceFinishListener;
 import org.elsys.models.Building;
@@ -14,6 +15,7 @@ import org.elsys.services.VillageService;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -59,15 +61,11 @@ public class VillageActivity extends Activity {
 
 			@Override
 			public void onServiceFinish() {
-				onVillageServiceFinish();
+				setResourceBar();
+				setBuildings();
 			}
 
 		});
-	}
-
-	private void onVillageServiceFinish() {
-		setResourceBar();
-		setBuildings();
 	}
 
 	private void setResourceBar() {
@@ -130,7 +128,6 @@ public class VillageActivity extends Activity {
 				upgrade.setClickable(true);
 				// upgradeService.getResult();
 				if (upgradeService.getError() == null) {
-					// Recreate the village to refresh its contents
 					createVillage();
 				}
 				showError();
@@ -156,9 +153,16 @@ public class VillageActivity extends Activity {
 			@Override
 			public void onServiceFinish() {
 				// Kill the application proccess
-				android.os.Process.killProcess(android.os.Process.myPid());
+				HttpClient.sessionId = "null";
+				loginScreen();
 			}
 
 		});
+	}
+
+	private void loginScreen() {
+		Intent intent = new Intent(this, LoginActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
 	}
 }

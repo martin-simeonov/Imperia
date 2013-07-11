@@ -15,39 +15,38 @@ import com.google.gson.reflect.TypeToken;
 public class VillageService {
 
 	private Gson gson;
-	private HttpClient httpClient;
 
 	private Resource resources;
 	private ArrayList<Building> buildings;
 
 	public VillageService() {
 		gson = new Gson();
-		httpClient = new HttpClient();
 	}
 
 	public void populate(final OnServiceFinishListener fl) {
 		// Form JSON String for the request
-		Map<String, Integer> request = new LinkedHashMap<String, Integer>();
+		Map<String, Object> request = new LinkedHashMap<String, Object>();
 		request.put("id", 2);
+		request.put("sessionid", HttpClient.sessionId);
 
-		httpClient.sendRequest(gson.toJson(request), fl);
+		HttpClient.sendRequest(gson.toJson(request), fl);
 	}
 
 	public void getResult() {
 		// Get the response from server
-		String json = httpClient.getResponse().toString();
+		String json = HttpClient.getResponse().toString();
 
 		Map<String, Object> hm = gson.fromJson(json,
 				new TypeToken<LinkedHashMap<String, Object>>() {
 				}.getType());
 
 		// Create the resource object from JSON
-		resources = gson.fromJson(hm.get("resources").toString(),
+		resources = gson.fromJson(gson.toJson(hm.get("resources")),
 				new TypeToken<Resource>() {
 				}.getType());
 
 		// Create the buildings list from JSON
-		buildings = gson.fromJson(hm.get("buildings").toString(),
+		buildings = gson.fromJson(gson.toJson(hm.get("buildings")),
 				new TypeToken<ArrayList<Building>>() {
 				}.getType());
 	}
